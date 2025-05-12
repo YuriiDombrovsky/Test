@@ -4,6 +4,6 @@ namespace Template.Services;
 
 public interface IDbService
 {
-    Task<CustomDTO> GetSmth(int customerId);
+    Task<CustomDto> GetAppointmentsAsync(int patientId);
     Task AddNewSmth(int customerId, RequestDTO requestDto);
 }

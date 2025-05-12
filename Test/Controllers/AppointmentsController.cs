@@ -15,11 +15,20 @@ public class AppointmentsController : ControllerBase
         _dbService = dbService;
     }
 
-    [HttpGet("{id}/smth")]
-    public async Task<IActionResult> GetSmth(int id)
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetAppointments(int id)
     {
-        var smth = await _dbService.GetSmth(id);
-        return Ok(smth);
+        try
+        {
+            var smth = await _dbService.GetAppointmentsAsync(id);
+            return Ok(smth);
+        }
+        catch (NotFoundEx e)
+        {
+            return NotFound(e.Message);
+        }
+
+        
     }
 
     [HttpPost("{id}/smth")]
@@ -29,7 +38,7 @@ public class AppointmentsController : ControllerBase
         {
             await _dbService.AddNewSmth(id, requestDTO);
         }
-        catch (CustomEx1 e)
+        catch (NotFoundEx e)
         {
             return Conflict(e.Message);
         }
@@ -38,6 +47,6 @@ public class AppointmentsController : ControllerBase
             return NotFound(e.Message);
         }
         
-        return CreatedAtAction(nameof(GetSmth), new { id }, requestDTO);
+        return CreatedAtAction(nameof(GetAppointments), new { id }, requestDTO);
     }
 }
